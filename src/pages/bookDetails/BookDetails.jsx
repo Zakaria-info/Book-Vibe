@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useLoaderData, useParams } from "react-router";
+import { BookContext } from "../../context/BookProvider";
 
 const BookDetails = () => {
   const { bookId: bookParamsId } = useParams();
-  console.log(bookParamsId, "bookParamsId");
+  // console.log(bookParamsId, "bookParamsId");
 
   const books = useLoaderData();
-  console.log(books, "books");
+  // console.log(books, "books");
 
   const expectedBook = books.find((book) => book.bookId == bookParamsId);
-  console.log(expectedBook, "expectedBook");
+  // console.log(expectedBook, "expectedBook");
 
   const {
     bookId,
@@ -18,12 +19,17 @@ const BookDetails = () => {
     image,
     review,
     totalPages,
-    rating,
     category,
     tags,
     publisher,
     yearOfPublishing,
   } = expectedBook;
+
+  const {handleMarkAsRead, handleWishlist} = useContext(BookContext)
+
+
+
+
 
   return (
     <div className="grid grid-cols-2 bg-base-100 shadow-sm container mx-auto my-8">
@@ -55,8 +61,8 @@ const BookDetails = () => {
           </div>
           
           <div className="flex items-center gap-2">
-            <button className="btn">Read</button>
-          <button className="btn btn-primary">Wishlist</button>
+            <button className="btn" onClick={()=>handleMarkAsRead(expectedBook)}>Mark As Read</button>
+          <button className="btn btn-primary" onClick={()=>handleWishlist(expectedBook)}>Add to Wishlist</button>
           </div>
         </div>
       </div>

@@ -6,10 +6,15 @@ import MainLayout from "./layout/MainLayout";
 import Homepage from "./pages/homepage/Homepage";
 import Books from "./pages/books/Books";
 import { router } from "./routes/Routs";
+import BookProvider from "./context/BookProvider";
+import { ToastContainer } from "react-toastify";
 
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router} />,
+    <BookProvider>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </BookProvider>
   </StrictMode>,
 );
