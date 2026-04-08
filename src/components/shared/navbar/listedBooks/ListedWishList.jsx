@@ -1,12 +1,30 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BookContext } from "../../../../context/BookProvider";
 import BooksCard from "../ui/BooksCard";
 
-const ListedWishList = () => {
+const ListedWishList = ({sortingType}) => {
   const { wishlist } = useContext(BookContext);
   console.log(wishlist, "bookContext");
 
-  if(wishlist.length === 0) {
+    const [filteredWishList, setFilteredWishList] = useState(wishlist)
+  
+    useEffect(()=> {
+      if(sortingType){
+          if(sortingType === "pages") {
+              const sortedData = [...wishlist].sort((a,b) =>a.totalPages - b.totalPages)
+              
+              setFilteredWishList(sortedData);
+          }else if(sortingType ==='rating'){
+               const sortedData = [...wishlist].sort((a,b) =>a.rating - b.rating)
+              console.log(sortedData, "sortedData")
+              setFilteredWishList(sortedData);
+          }
+      }
+  
+    }, [sortingType, wishlist])
+  
+
+  if(filteredWishList.length === 0) {
     return(
         <div className="h-[50vh] bg-gray-200 flex items-center justify-center">
             <h2 className="text-bold text-4xl">No WishList Data Found</h2>
@@ -17,7 +35,7 @@ const ListedWishList = () => {
   return (
     <div >
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {wishlist.map((book, ind) => (
+        {filteredWishList.map((book, ind) => (
           <BooksCard key={ind} book={book} />
         ))}
       </div>
